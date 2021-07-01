@@ -1,12 +1,9 @@
-# guide used https://towardsdatascience.com/perceptron-and-its-implementation-in-python-f87d6c7aa428
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import random
 import seaborn
-
 
 # out activitaion function
 def ActivFunc(v):
@@ -24,11 +21,9 @@ def load_data(viz = True):
     data[4] = np.where(data.iloc[:, -1]=='Iris-setosa', 0, 1)
     data = np.asmatrix(data, dtype = 'float64')
 
-
     #data visualisation
-
-    if (viz== True):
-        print(data)
+    if (viz == True):
+        # print(data)
 
         plt.scatter(np.array(data[:50,0]), np.array(data[:50,2]), marker='o', label='setosa')
         plt.scatter(np.array(data[50:,0]), np.array(data[50:,2]), marker='x', label='versicolor')
@@ -36,8 +31,8 @@ def load_data(viz = True):
         plt.ylabel('sepal length')
         plt.legend()
         plt.show()
-
-    return data
+    else:
+        return data
 
 
 # Perceptron implementation
@@ -50,6 +45,8 @@ def perceptron(data, num_iter):
 
     misclassified_ = []
 
+
+    # the iterations
     for epoch in range(num_iter):
         misclassified = 0
         for x, label in zip(features, labels):
@@ -62,8 +59,6 @@ def perceptron(data, num_iter):
             else:
                 target = 0.0
 
-            #target = 1.0 if (y > 0) else 0.0
-
             delta = (label.item(0,0) - target)
 
             if(delta): # misclassified
@@ -75,12 +70,12 @@ def perceptron(data, num_iter):
 
 
 
-def ComputePreceptron(N = 10, D):
+def ComputePreceptron(D, N = 10):
     """
     N - Number of iteration
     D - data
-
     """
+    data = D
     num_iter = N
     w, misclassified_ = perceptron(data, num_iter)
 
