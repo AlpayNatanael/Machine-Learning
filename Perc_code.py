@@ -51,9 +51,10 @@ def perceptron(data, num_iter):
         misclassified = 0
         for x, label in zip(features, labels):
             x = np.insert(x,0,1)
-            y = np.dot(w, x.transpose())
+            y = np.dot(w, x.transpose()) # we take the transpose to do the dot product
 
-            # target is the result of the activation function
+            
+            # Activation function
             if ActivFunc(y)>0:
                 target = 1.0
             else:
