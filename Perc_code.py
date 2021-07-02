@@ -53,7 +53,7 @@ def perceptron(data, num_iter):
             x = np.insert(x,0,1)
             y = np.dot(w, x.transpose()) # we take the transpose to do the dot product
 
-            
+
             # Activation function
             if ActivFunc(y)>0:
                 target = 1.0
@@ -85,3 +85,30 @@ def ComputePreceptron(D, N = 10):
     plt.xlabel('iterations')
     plt.ylabel('misclassified')
     plt.show()
+
+
+
+########################################################
+
+
+# aux function for ploting, not working yet
+
+#https://stats.stackexchange.com/questions/71335/decision-boundary-plot-for-a-perceptron
+def plot_data(inputs,targets,weights):
+    # fig config
+    plt.figure(figsize=(10,6))
+    plt.grid(True)
+
+    #plot input samples(2D data points) and i have two classes.
+    #one is +1 and second one is -1, so it red color for +1 and blue color for -1
+    for input,target in zip(inputs,targets):
+        plt.plot(input[0],input[1],'ro' if (target == 1.0) else 'bo')
+
+    # Here i am calculating slope and intercept with given three weights
+    for i in np.linspace(np.amin(inputs[:,:1]),np.amax(inputs[:,:1])):
+        slope = -(weights[0]/weights[2])/(weights[0]/weights[1])
+        intercept = -weights[0]/weights[2]
+
+        #y =mx+c, m is slope and c is intercept
+        y = (slope*i) + intercept
+        plt.plot(i, y,'ko')
