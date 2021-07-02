@@ -5,9 +5,23 @@ import matplotlib.cm as cm
 import random
 import seaborn
 
+
+#Source: https://towardsdatascience.com/perceptron-and-its-implementation-in-python-f87d6c7aa428
+
 # out activitaion function
+#def ActivFunc(v):
+#    return (1 - np.exp(-2*v))/(1 + np.exp(-2*v))
+
 def ActivFunc(v):
-    return (1 - np.exp(-2*v))/(1 + np.exp(-2*v))
+    x = (1 - np.exp(-2*v))/(1 + np.exp(-2*v))
+    if x < 0:
+        x = 0
+    else:
+        x = 1
+    return x
+    
+
+
 
 # our data, with deafult data set being the iris data set
 def load_data(viz = True):
@@ -52,15 +66,7 @@ def perceptron(data, num_iter):
         for x, label in zip(features, labels):
             x = np.insert(x,0,1)
             y = np.dot(w, x.transpose()) # we take the transpose to do the dot product
-
-
-            # Activation function
-            if ActivFunc(y)>0:
-                target = 1.0
-            else:
-                target = 0.0
-
-            delta = (label.item(0,0) - target)
+            delta = (label.item(0,0) - ActivFunc(y))
 
             if(delta): # misclassified
                 misclassified += 1
