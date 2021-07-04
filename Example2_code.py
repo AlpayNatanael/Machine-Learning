@@ -47,7 +47,7 @@ def load_data_set(show = True, line = False, weights = []):
         plt.xlabel('sepal length')
         plt.ylabel('petal length')
         plt.legend(loc='upper right')
-
+        plt.show()
         line_plt = []
         # Here i am calculating slope and intercept with given three weights
         for i in np.linspace(np.amin(X[:50,:1]),np.amax(X[:50,:1])):
@@ -65,8 +65,6 @@ def load_data_set(show = True, line = False, weights = []):
 
 
     else:
-        #X = X[:50,]
-        #y = X[50:100,]
         return X,y
 
 
@@ -90,10 +88,8 @@ class Perceptron(object):
     # maps the traings data X and the target Y
     def fit(self, X, y):
         rand = np.random.RandomState(self.random_state)
-
         # create a vector of weights of of size 'size of x + 1' with first entery as bias.
         self.weights = rand.normal(loc=0.0, scale=0.01, size=1 +  X.shape[1])
-
         self.errors_ = []
         for _ in range(self.n_iter):
             errors = 0
@@ -109,8 +105,10 @@ class Perceptron(object):
 
                 # if the update is not zero, then we have an error.
                 errors += int(update != 0.0)
-                self.errors_.append(errors)
 
+                # add the error as a negative value
+                self.errors_.append(errors)
+                #self.errors_.insert(0,errors)
             #plot_data(self, X,y, self.weights[1:])
             return self
 
@@ -132,7 +130,7 @@ class Perceptron(object):
 
 
     def compute(self):
-        X,y = load_data_set(False)
+        X,y = load_data_set(show = False)
         self.fit(X,y)
         plt.plot(range(1, len(self.errors_) + 1), self.errors_, marker='o')
         plt.xlabel('Epochs')
