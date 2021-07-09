@@ -61,7 +61,7 @@ def load_data_set(show = True, line = False, weights = []):
             intercept = -weights[0]/weights[2]
 
             #y =mx+c, m is slope and c is intercept
-            y = (slope*i) + intercept
+            y = -1*(slope*i) + intercept
             plt.plot(i, y,'ko')
             #line_plt.append([i,y,'ko'])
 
