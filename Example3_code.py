@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_iris
 import Perc_code as p
 from numba import jit
-
+import os
 
 """
 This code is a modification for the code provided in the guide:
@@ -112,17 +112,21 @@ class Perceptron:
         return np.mean(y == pred_y)
 
 def show_data(
-                X_data = np.load('X_lin_sep.npy'),
-                y_data = np.load('y_lin_sep.npy'),
+                X = './data/X_lin_sep.npy',
+                y = './data/y_lin_sep.npy',
                 show = True,
                 n_features=2,
-                n_classes=2,
+                n_classes=2,        
                 n_samples=200,
                 n_redundant=0,
                 n_clusters_per_class=1,
                 noise=0.03,
                 factor=0.7
             ):
+            
+    X_data = np.load(X)
+    y_data = np.load(y)
+
     # for the train split method later, simply defines the type of data we are
     # spliting, perhas not necessery?
     X, y = make_classification(
@@ -163,6 +167,25 @@ def train_data(X,y, location = 'output/lin_sep/anim'):
 
     return score
 
+def train_bad_data(X,y, location = 'output/lin_sep_bad/anim'):
+    if not os.path.exists(location):
+        os.makedirs(location)
+        # Assets generation
+
+    fig, ax = plt.subplots(nrows=1, ncols=1, dpi=120, figsize=(8,6))
+    plot_data_points(ax, X, y)
+    plt.savefig('output/lin_sep_bad/figure.png')
+    plt.show()
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.75)
+
+    perceptron_anim(X, y, X_train, y_train, X_test, y_test, location, iteration_level=True, p=1, n_iter=100)
+
+    perceptron = Perceptron()
+    perceptron.fit(X_train, y_train)
+
+    perceptron.score(X_test, y_test)
+    
 
 
 #############  Code for plotting  #############
@@ -191,6 +214,12 @@ def plot_decision_boundary(ax, clf, X, p):
     z = clf.predict(X_cpy)
     z = z.reshape((n, n))
     ax.contour(x, y, z, levels=[0])
+
+
+
+
+
+################# Non-linearity #################
 
 def polynom(indices_list, indices, a, b, p):
     indices = [*indices]
